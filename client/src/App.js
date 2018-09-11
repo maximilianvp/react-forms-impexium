@@ -4,11 +4,14 @@ import { Widget } from './Widget'
 
 class App extends React.Component {
   render () {
+    const props = {
+      uuid: 1
+    }
     return (
       <div>
-        App
+        App123
         <br />
-        <Widget uuid={1}/>
+        <Widget {...props} />
       </div>
     )
   }

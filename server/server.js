@@ -6,6 +6,7 @@ const readFile = util.promisify(fs.readFile)
 const http = require('http')
 
 const app = express()
+app.use(bodyParser())
 
 const loadBlob = async (filename) => {
   const bytes = await readFile(filename)
@@ -15,9 +16,14 @@ const loadBlob = async (filename) => {
 app.get('/', (req, res) => res.sendfile('./index.html'))
 app.use('/dist', express.static('./dist'))
 
+app.post('/api', async (req, res) => {
+  console.log(`we received: ${JSON.stringify(req.body, null, 3)}`)
+  return res.json({ code: 'yes all is well' })
+})
+
 app.get('/widget/:uuid', async (req, res) => {
   const uuid = req.params.uuid
-  const widget = await loadBlob(`./widget-${uuid}.js`)
+  const widget = await loadBlob(`./widget-${uuid}.txt`)
   return res.json({ widget })
 })
 

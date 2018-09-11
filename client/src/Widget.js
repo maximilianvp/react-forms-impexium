@@ -1,6 +1,26 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
 import { Button } from './Button'
+import { TextInput } from './TextInput'
+
+const api = {
+  saveForm: ({ formContent }) => {
+    const bodyToPost = {
+      formContent,
+      userName: 'navid',
+    }
+    fetch('http://127.0.0.1:1337/api',
+      {
+        method: 'POST',
+        body: JSON.stringify(bodyToPost),
+        headers: {
+          "Content-Type": "application/json"
+        },
+      })
+    .then((response) => response.json())
+    .then(({ code }) => console.log(`Successful? ${code}`))
+  }
+}
 
 class Widget extends React.Component {
 
@@ -8,7 +28,7 @@ class Widget extends React.Component {
     super()
 
     this.state = {
-      widget: null,
+      sourceCode: null,
     }
   }
 
@@ -17,23 +37,29 @@ class Widget extends React.Component {
     fetch(`http://127.0.0.1:1337/widget/${uuid}`)
       .then((response) => response.json())
       .then(({ widget }) => {
+        const fn = new Function('React', 'createReactClass', atob(widget))
+        const sourceCode = fn(React, createReactClass)
         this.setState({
-          widget: new Function('React', 'createReactClass', atob(widget))(React, createReactClass)
+          sourceCode
         })
       })
   }
 
   render() {
-    const { widget } = this.state
-    if (!widget) {
-      return 'no widget yet'
+    const { sourceCode } = this.state
+    if (!sourceCode) {
+      return 'no sourceCode yet'
     }
-    const bindings = {
-      Button,
+    const props = {
+      widgets: {
+        Button,
+        TextInput,
+      },
+      api,
     }
     return (
       <div>
-        {React.createElement(widget, bindings)}
+        {React.createElement(sourceCode, props)}
       </div>
     )
   }
