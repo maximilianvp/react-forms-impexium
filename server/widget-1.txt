@@ -4,17 +4,19 @@ return createReactClass({
     return {
       firstName: '',
       lastName: '',
+      region: null,
     }
   },
 
   handleButtonClick: function () {
     const { api } = this.props
     const { saveForm } = api
-    const { firstName, lastName } = this.state
+    const { firstName, lastName, region } = this.state
     saveForm({
       formContent: [
         { name: 'firstName', value: firstName },
         { name: 'lastName', value: lastName },
+        { name: 'region', value: region }
       ]
     })
   },
@@ -27,6 +29,10 @@ return createReactClass({
     this.setState({ lastName })
   },
 
+  handleChangeRegion: function (region) {
+    this.setState({ region })
+  },
+
   render: function () {
     const {
       widgets,
@@ -35,12 +41,14 @@ return createReactClass({
     const {
       firstName,
       lastName,
+      region,
     } = this.state
 
     return React.createElement('div', null, [
       React.createElement('h1', null, ['Welco asdfasdf asdf me to our form']),
       React.createElement(widgets.TextInput, { label: 'First name', onChange: this.handleChangeFirstName, value: firstName }),
       React.createElement(widgets.TextInput, { label: 'Last name', onChange: this.handleChangeLastName, value: lastName }),
+      React.createElement(widgets.IndividualField, { field: 'customFields["region"]', onChange: this.handleChangeRegion, value: region, label: "Region" }),
       React.createElement(widgets.Button, {
         label: 'Save Form',
         onClick: this.handleButtonClick,

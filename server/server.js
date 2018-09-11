@@ -21,6 +21,13 @@ app.post('/api', async (req, res) => {
   return res.json({ code: 'yes all is well' })
 })
 
+app.get('/fieldoptions/individual', async (req, res) => {
+  const { type, name } = req.query
+  return res.json({
+    regions: ['region a', 'region b'],
+  })
+})
+
 app.get('/widget/:uuid', async (req, res) => {
   const uuid = req.params.uuid
   const widget = await loadBlob(`./widget-${uuid}.txt`)

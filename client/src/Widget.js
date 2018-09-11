@@ -2,6 +2,7 @@ import React from 'react'
 import createReactClass from 'create-react-class'
 import { Button } from './Button'
 import { TextInput } from './TextInput'
+import { IndividualField } from './IndividualField'
 
 const api = {
   saveForm: ({ formContent }) => {
@@ -54,6 +55,7 @@ class Widget extends React.Component {
       widgets: {
         Button,
         TextInput,
+        IndividualField,
       },
       api,
     }
